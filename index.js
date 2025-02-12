@@ -25,14 +25,11 @@ app.use(cors({
 }));
 
 
-app.use('/health', (req, res) => {
-  res.send('Service is up and running');
-});
+
 app.use('/copilotkit', (req, res, next) => {
   (async () => {
     const runtime = new CopilotRuntime(
         {
-
         remoteEndpoints: [ 
             { url: process.env.REMOTE_URL},
         ],
@@ -47,7 +44,11 @@ app.use('/copilotkit', (req, res, next) => {
     return handler(req, res);
   })().catch(next);
 });
- 
-app.listen(8080, () => {
+
+app.get('/health', (req, res) => {
+  res.send('Service is up and running');
+});
+
+app.listen(process.env.PORT, () => {
   console.log('Listening at /copilotkit endpoint');
 });
